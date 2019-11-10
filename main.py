@@ -12,7 +12,7 @@ def save_object(obj, filename):
         pickle.dump(obj, output, pickle.HIGHEST_PROTOCOL)
 
 
-def load_object(filename) -> object:
+def load_object(filename) -> object or None:
     try:
         with open(filename, 'rb') as input:
             return pickle.load(input)
