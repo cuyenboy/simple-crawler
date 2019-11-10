@@ -53,17 +53,18 @@ response = session.get('http://google.fr', headers=headersToSend, cookies=cookie
 data = dump.dump_all(response)
 print(data.decode(response.encoding))
 
+print('------------------------------------------------------------')
+
 # dump several data
 print('final_url = {}'.format(response.url))
 print('status_code = {}'.format(response.status_code))
 print('encoding = {}'.format(response.encoding))
 print('apparent_encoding = '.format(response.apparent_encoding))
-print('sent_headers = ')
-print(pp.pprint(vars(response.request.headers)))
-print('received_headers = ')
-print(pp.pprint(vars(response.headers)))
-print('cookies = ')
-print(pp.pprint(vars(response.cookies)))
+print('sent_headers = {}'.format(response.request.headers))
+print('received_headers = {}'.format(response.headers))
+print('sent_body = {}'.format(response.request.body))
+print('received_body = {}'.format(response.content))
+print('final_cookies = {}'.format(response.cookies))
 
 # save final object cookieJar for later use
 save_object(response.cookies, 'cookies.jar')
