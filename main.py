@@ -74,9 +74,10 @@ print('encoding = {}'.format(response.encoding))
 print('apparent_encoding = '.format(response.apparent_encoding))
 print('sent_headers = {}'.format(response.request.headers))
 print('received_headers = {}'.format(response.headers))
-print('sent_body = {}'.format(response.request.body))
-print('received_body = {}'.format(response.content))
+print('sent_body = {}'.format(response.request.body[:50] if response.request.body is not None else None))
+print('received_body = {}'.format(response.content[:50] if response.content is not None else None))
 print('final_cookies = {}'.format(response.cookies))
+print('ok = {}'.format(response.ok))
 
 # save final object cookieJar for later use
 save_object(response.cookies, 'cookies.jar')
