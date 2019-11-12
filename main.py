@@ -5,6 +5,7 @@ import requests
 import pprint
 import pickle
 from requests_toolbelt.utils import dump
+from requests import ConnectionError, Timeout, TooManyRedirects, RequestException
 
 
 def save_object(obj, filename):
@@ -24,9 +25,9 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # setup your own proxies
 proxies = {
-    'http': 'http://1.1.1.1:31',
-    'https': 'https://1.1.2.1:32',
-    'ftp': 'ftp://1.1.3.1:33'
+    # 'http': 'http://1.1.1.1:31',
+    # 'https': 'https://1.1.2.1:32',
+    # 'ftp': 'ftp://1.1.3.1:33'
 }
 
 # setup some extra headers common values, like userAgent & referer
@@ -47,7 +48,18 @@ cookies = load_object('cookies.jar')
 conn_timeout = 2
 read_timeout = 5
 timeouts = (conn_timeout, read_timeout)
-response = session.get('http://google.fr', headers=headersToSend, cookies=cookies, timeout=timeouts)
+try:
+    response = session.get('http://google.fr', headers=headersToSend, cookies=cookies, timeout=timeouts, proxies=proxies)
+except ConnectionError:
+    print('connectionError')
+except Timeout:
+    print('Timeout')
+except TooManyRedirects:
+    print('TooManyRedirects')
+except RequestException:
+    print('RequestException')
+except:
+    print('unknownException')
 
 # dump all request data to debug your frames
 data = dump.dump_all(response)
