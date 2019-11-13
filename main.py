@@ -6,6 +6,7 @@ import pprint
 import pickle
 from requests_toolbelt.utils import dump
 from requests import ConnectionError, Timeout, TooManyRedirects, RequestException
+import cchardet as chardet
 
 
 def save_object(obj, filename):
@@ -50,6 +51,32 @@ read_timeout = 5
 timeouts = (conn_timeout, read_timeout)
 try:
     response = session.get('http://google.fr', headers=headersToSend, cookies=cookies, timeout=timeouts, proxies=proxies)
+
+    # use the power of cchardet to detect response content bytes encoding
+    chardet_encoding = chardet.detect(response.content)
+
+    # dump all request data to debug your frames
+    data = dump.dump_all(response)
+    print(data.decode(chardet_encoding['encoding']))
+
+    print('------------------------------------------------------------')
+
+    # dump several data
+    print('final_url = {}'.format(response.url))
+    print('status_code = {}'.format(response.status_code))
+    print('encoding = {}'.format(response.encoding))
+    print('apparent_encoding = {}'.format(response.apparent_encoding))
+    print('chardet_encoding = {}'.format(chardet_encoding))
+    print('sent_headers = {}'.format(response.request.headers))
+    print('received_headers = {}'.format(response.headers))
+    print('sent_body = {}'.format(response.request.body[:200] if response.request.body is not None else None))
+    print('received_body = {}'.format(response.content.decode(chardet_encoding['encoding'])[:200] if response.content is not None else None))
+    print('final_cookies = {}'.format(response.cookies))
+    print('ok = {}'.format(response.ok))
+
+    # save final object cookieJar for later use
+    save_object(response.cookies, 'cookies.jar')
+
 except ConnectionError:
     print('connectionError')
 except Timeout:
@@ -60,24 +87,3 @@ except RequestException:
     print('RequestException')
 except:
     print('unknownException')
-
-# dump all request data to debug your frames
-data = dump.dump_all(response)
-print(data.decode(response.encoding))
-
-print('------------------------------------------------------------')
-
-# dump several data
-print('final_url = {}'.format(response.url))
-print('status_code = {}'.format(response.status_code))
-print('encoding = {}'.format(response.encoding))
-print('apparent_encoding = '.format(response.apparent_encoding))
-print('sent_headers = {}'.format(response.request.headers))
-print('received_headers = {}'.format(response.headers))
-print('sent_body = {}'.format(response.request.body[:50] if response.request.body is not None else None))
-print('received_body = {}'.format(response.content[:50] if response.content is not None else None))
-print('final_cookies = {}'.format(response.cookies))
-print('ok = {}'.format(response.ok))
-
-# save final object cookieJar for later use
-save_object(response.cookies, 'cookies.jar')
