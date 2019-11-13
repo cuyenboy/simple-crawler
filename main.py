@@ -63,7 +63,7 @@ conn_timeout = 2
 read_timeout = 5
 timeouts = (conn_timeout, read_timeout)
 try:
-    response = session.get('https://google.fr/search?q=test', headers=headersToSend, cookies=cookies, timeout=timeouts, proxies=proxies)
+    response = session.get('https://www.google.fr/search?q=test', headers=headersToSend, cookies=cookies, timeout=timeouts, proxies=proxies)
 
     # use the power of cchardet to detect response content bytes encoding
     chardet_encoding = chardet.detect(response.content)
