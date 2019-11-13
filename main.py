@@ -25,10 +25,23 @@ def load_object(filename) -> object or None:
 pp = pprint.PrettyPrinter(indent=4)
 
 # setup your own proxies
+
+# SOCKS5 proxy for HTTP/HTTPS
+# proxies = {
+#     'http' : "socks5://1.2.3.4:1080",
+#     'https' : "socks5://1.2.3.4:1080"
+# }
+
+# SOCKS4 proxy for HTTP/HTTPS
+# proxies = {
+#     'http' : "socks4://1.2.3.4:1080",
+#     'https' : "socks4://1.2.3.4:1080"
+# }
+
+# HTTP proxy for HTTP/HTTPS
 proxies = {
-    # 'http': 'http://1.1.1.1:31',
-    # 'https': 'https://1.1.2.1:32',
-    # 'ftp': 'ftp://1.1.3.1:33'
+    # 'http': "http://1.2.3.4:1080",
+    # 'https': "https://1.2.3.4:1080"
 }
 
 # setup some extra headers common values, like userAgent & referer
