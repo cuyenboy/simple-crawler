@@ -28,26 +28,26 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # SOCKS5 proxy for HTTP/HTTPS
 # proxies = {
-#     'http' : "socks5://1.2.3.4:1080",
-#     'https' : "socks5://1.2.3.4:1080"
+#     'http': "socks5://218.92.206.108:7302",
+#     'https': "socks5://218.92.206.108:7302",
 # }
 
 # SOCKS4 proxy for HTTP/HTTPS
 # proxies = {
-#     'http' : "socks4://1.2.3.4:1080",
-#     'https' : "socks4://1.2.3.4:1080"
+#     'http': "socks4://221.214.212.149:45087",
+#     'https': "socks4://221.214.212.149:45087",
 # }
 
 # HTTP proxy for HTTP/HTTPS
 proxies = {
-    # 'http': "http://1.2.3.4:1080",
-    # 'https': "https://1.2.3.4:1080"
+    # 'http': "http://13.66.25.52:80",
+    # 'https': "https://207.191.15.166:38528",
 }
 
 # setup some extra headers common values, like userAgent & referer
 headersToSend = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36',
-    'Referer': 'https://www.google.fr',
+    'Referer': 'https://www.google.fr/',
 }
 
 # initialize session, and setup a max redirect to avoid bot traps
@@ -63,7 +63,7 @@ conn_timeout = 2
 read_timeout = 5
 timeouts = (conn_timeout, read_timeout)
 try:
-    response = session.get('http://google.fr', headers=headersToSend, cookies=cookies, timeout=timeouts, proxies=proxies)
+    response = session.get('https://google.fr/search?q=test', headers=headersToSend, cookies=cookies, timeout=timeouts, proxies=proxies)
 
     # use the power of cchardet to detect response content bytes encoding
     chardet_encoding = chardet.detect(response.content)
@@ -90,13 +90,13 @@ try:
     # save final object cookieJar for later use
     save_object(response.cookies, 'cookies.jar')
 
-except ConnectionError:
-    print('connectionError')
-except Timeout:
-    print('Timeout')
-except TooManyRedirects:
-    print('TooManyRedirects')
-except RequestException:
-    print('RequestException')
-except:
-    print('unknownException')
+except ConnectionError as e:
+    print('connectionError -> {}'.format(str(e)))
+except Timeout as e:
+    print('Timeout -> {}'.format(str(e)))
+except TooManyRedirects as e:
+    print('TooManyRedirects -> {}'.format(str(e)))
+except RequestException as e:
+    print('RequestException -> {}'.format(str(e)))
+except BaseException as e:
+    print('Exception -> {}'.format(str(e)))
